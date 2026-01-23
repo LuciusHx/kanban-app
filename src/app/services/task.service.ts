@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { Task, TaskStatus } from '../models/task.interface';
+import { Task, TaskFormModel, TaskStatus } from '../models/task.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +28,21 @@ export class TaskService {
   readonly reviewTasks = computed(() => this.tasks().filter((t) => t.status === 'Em revisão'));
   readonly doneTasks = computed(() => this.tasks().filter((t) => t.status === 'Concluído'));
 
+  moveTask(taskId: string, newStatus: TaskStatus) {
+    this._tasks.update((tasks) =>
+      tasks.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              status: newStatus,
+              updatedAt: new Date().toISOString(),
+            }
+          : task,
+      ),
+    );
+  }
+
+  // --------- CRUD
   loadTasks() {
     this._loading.set(true);
     this._error.set(null);
@@ -44,17 +59,19 @@ export class TaskService {
     });
   }
 
-  moveTask(taskId: string, newStatus: TaskStatus) {
-    this._tasks.update((tasks) =>
-      tasks.map((task) =>
-        task.id === taskId
-          ? {
-              ...task,
-              status: newStatus,
-              updatedAt: new Date().toISOString(),
-            }
-          : task,
-      ),
-    );
+  createTask(task: TaskFormModel) {
+    const now = new Date().toISOString();
+
+    const newTask: Task = {
+      id: crypto.randomUUID(),
+      title: task.title,
+      description: task.description,
+      status: 'Backlog',
+      priority: task.priority,
+      createdAt: now,
+      updatedAt: now,
+    };
+
+    this._tasks.update((tasks) => [...tasks, newTask]);
   }
 }

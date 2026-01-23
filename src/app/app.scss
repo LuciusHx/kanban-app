@@ -1,26 +1,19 @@
 .board {
   display: flex;
   justify-content: center;
-
   gap: 8px;
-}
-
-.col1,
-.col2 {
-  display: flex;
-  flex-direction: column;
-  border: solid;
-  padding: 20px;
-  background-color: whitesmoke;
-  border-radius: 6px;
-}
-
-label {
-  padding: 1rem;
-  border: solid;
 }
 
 .col {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  border: solid 1px;
+  min-height: 600px;
+  width: 300px;
+}
+
+label {
+  padding: 1rem;
+  border: solid 1px;
 }

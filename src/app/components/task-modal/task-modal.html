@@ -1,0 +1,24 @@
+@if (open()) {
+  <dialog open>
+    <h2>{{ mode() === 'edit' ? 'Editar tarefa' : 'Nova tarefa' }}</h2>
+
+    <form>
+      <input [formField]="taskForm.title" />
+      <textarea [formField]="taskForm.description"></textarea>
+
+      <select [formField]="taskForm.priority">
+        <option value="LOW">Baixa</option>
+        <option value="MEDIUM">Média</option>
+        <option value="HIGH">Alta</option>
+      </select>
+      <button
+        type="button"
+        [disabled]="taskForm.title().invalid() || taskForm.description().invalid()"
+        (click)="save()"
+      >
+        Salvar
+      </button>
+      <button (click)="cancel.emit()">Cancelar</button>
+    </form>
+  </dialog>
+}

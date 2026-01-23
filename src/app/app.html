@@ -1,5 +1,11 @@
 <div>
-  <h1>kanban</h1>
+  <app-task-modal
+    [open]="showModal()"
+    mode="create"
+    (saveTask)="createTask($event)"
+    (cancel)="closeModal()"
+  ></app-task-modal>
+  <button (click)="openModal()">Adicionar Task</button>
   <div cdkDropListGroup class="board">
     <div
       cdkDropList
