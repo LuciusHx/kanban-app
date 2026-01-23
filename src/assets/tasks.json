@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "title": "Configurar Projeto Angular",
+    "description": "Instalar Angular CLI e configurar a estrutura inicial de pastas por domínio.",
+    "status": "Concluído",
+    "priority": "Alta",
+    "createdAt": "2023-10-01T09:00:00Z",
+    "updatedAt": "2023-10-01T10:30:00Z"
+  },
+  {
+    "id": "2",
+    "title": "Criar TaskStore com Signals",
+    "description": "Implementar o serviço de gerenciamento de estado utilizando os novos Signals do Angular.",
+    "status": "Em andamento",
+    "priority": "Alta",
+    "createdAt": "2023-10-02T14:00:00Z",
+    "updatedAt": "2023-10-02T15:00:00Z"
+  },
+  {
+    "id": "3",
+    "title": "Implementar Drag-and-Drop",
+    "description": "Utilizar o Angular CDK para permitir mover as tarefas entre as colunas do Kanban.",
+    "status": "Backlog",
+    "priority": "Média",
+    "createdAt": "2023-10-03T08:20:00Z",
+    "updatedAt": "2023-10-03T08:20:00Z"
+  },
+  {
+    "id": "4",
+    "title": "Validar Responsividade",
+    "description": "Garantir que o quadro Kanban seja utilizável em dispositivos móveis.",
+    "status": "Em revisão",
+    "priority": "Baixa",
+    "createdAt": "2023-10-04T11:00:00Z",
+    "updatedAt": "2023-10-04T11:45:00Z"
+  },
+  {
+    "id": "5",
+    "title": "Configurar CloudFront",
+    "description": "Ajustar as permissões de OAC (Origin Access Control) no S3 para o deploy final.",
+    "status": "Backlog",
+    "priority": "Alta",
+    "createdAt": "2023-10-05T16:00:00Z",
+    "updatedAt": "2023-10-05T16:00:00Z"
+  }
+]

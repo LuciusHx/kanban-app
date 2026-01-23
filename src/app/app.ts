@@ -1,12 +1,26 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { CdkDragDrop, CdkDropList, CdkDrag, CdkDropListGroup } from '@angular/cdk/drag-drop';
+import { Component, inject } from '@angular/core';
+import { TaskService } from './services/task.service';
+import { Task, TaskStatus } from './models/task.interface';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [CdkDropList, CdkDrag, CdkDropListGroup],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
 export class App {
-  protected readonly title = signal('kanban-app');
+  taskService = inject(TaskService);
+
+  ngOnInit() {
+    this.taskService.loadTasks();
+  }
+
+  drop(event: CdkDragDrop<Task[]>, status: TaskStatus) {
+    const task = event.item.data as Task;
+
+    if (!task) return;
+
+    this.taskService.moveTask(task.id, status);
+  }
 }
