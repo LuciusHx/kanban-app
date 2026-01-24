@@ -11,14 +11,16 @@
         <option value="MEDIUM">Média</option>
         <option value="HIGH">Alta</option>
       </select>
-      <button
-        type="button"
-        [disabled]="taskForm.title().invalid() || taskForm.description().invalid()"
-        (click)="save()"
-      >
-        Salvar
-      </button>
-      <button type="button" (click)="cancel.emit()">Cancelar</button>
+      <div>
+        <button
+          type="button"
+          [disabled]="taskForm.title().invalid() || taskForm.description().invalid()"
+          (click)="save()"
+        >
+          Salvar
+        </button>
+        <button type="button" (click)="cancel.emit()">Cancelar</button>
+      </div>
     </form>
   </dialog>
 }
