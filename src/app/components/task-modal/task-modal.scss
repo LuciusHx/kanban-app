@@ -76,44 +76,6 @@ div:last-child {
   margin-top: 1.5rem;
 }
 
-button {
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition:
-    background 0.2s,
-    opacity 0.2s;
-  font-size: 0.9rem;
-}
-
-//button primario
-button:first-of-type {
-  background-color: #6366f1;
-  color: white;
-
-  &:hover {
-    background-color: #4f46e5;
-  }
-
-  &:disabled {
-    background-color: #a5a6f6;
-    cursor: not-allowed;
-    opacity: 0.7;
-  }
-}
-
-//button secundario
-button:last-of-type {
-  background-color: #f3f4f6;
-  color: #374151;
-
-  &:hover {
-    background-color: #e5e7eb;
-  }
-}
-
 //animacao
 @keyframes fadeIn {
   from {

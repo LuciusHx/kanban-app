@@ -1,16 +1,11 @@
-/* --- Layout Geral --- */
 :host {
   display: block;
   padding: 2rem;
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
-  background-color: #f8fafc; /* Fundo cinza bem claro */
+  background-color: #f8fafc;
   min-height: 100vh;
 }
 
-/* Botão Principal de Adicionar */
+//botao de adicionar
 button:not(.btn-icon) {
   background-color: #4f46e5;
   color: white;
@@ -28,28 +23,27 @@ button:not(.btn-icon) {
   }
 }
 
-/* --- Container do Board (Colunas) --- */
 .board {
   display: flex;
   gap: 1.5rem;
-  overflow-x: auto; /* Permite scroll horizontal em telas pequenas */
+  overflow-x: auto; //scroll horizontal
   padding-bottom: 1rem;
   align-items: flex-start;
 }
 
-/* --- Colunas --- */
+//colunas
 .col {
   flex: 1;
   min-width: 280px;
   max-width: 350px;
-  background: #f3f4f6; /* Cinza da coluna */
+  background: #f3f4f6;
   border-radius: 12px;
   padding: 1rem;
   display: flex;
   flex-direction: column;
 }
 
-/* Títulos das Colunas */
+//col title
 h3 {
   margin: 0 0 1rem 0;
   font-size: 1rem;
@@ -61,7 +55,6 @@ h3 {
   justify-content: space-between;
   align-items: center;
 
-  /* Contador de tarefas (opcional) */
   .count {
     background: #e5e7eb;
     color: #4b5563;
@@ -71,7 +64,7 @@ h3 {
   }
 }
 
-/* Área onde os cards ficam (Lista) */
+//lista
 .task-list {
   min-height: 500px;
   display: flex;
@@ -111,37 +104,18 @@ h3 {
   word-break: break-word; //quebra texto longo
 }
 
-/* Botões de Ação (Ícones) */
 .task-actions {
   display: flex;
   gap: 4px;
-  opacity: 0; /* Esconde por padrão */
+  opacity: 0;
   transition: opacity 0.2s;
 }
 
-/* Mostra botões quando passa o mouse no card */
 .task-card:hover .task-actions {
   opacity: 1;
 }
 
-.btn-icon {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  padding: 4px;
-  border-radius: 4px;
-
-  &:hover {
-    background-color: #f3f4f6;
-  }
-
-  &.delete:hover {
-    background-color: #fee2e2;
-  }
-}
-
-/* --- Classes Especiais do Angular CDK (Drag & Drop) --- */
+//special classes Angular CDK
 .cdk-drag-preview {
   box-sizing: border-box;
   border-radius: 8px;
@@ -152,20 +126,19 @@ h3 {
   padding: 1rem;
   display: flex;
   justify-content: space-between;
-
 }
 
-/* 2. O espaço vazio onde o elemento vai cair (Placeholder) */
+//espaco onde o elemento vai
 .cdk-drag-placeholder {
   opacity: 0;
 }
 
-/* 3. Animação suave quando os itens se reordenam */
+//animacao de reordenacao
 .cdk-drag-animating {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-/* 4. Animação dos outros itens quando um é solto */
+//animacao items quando algum é solto
 .task-list.cdk-drop-list-dragging .task-card:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
