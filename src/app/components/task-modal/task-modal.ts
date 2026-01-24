@@ -17,7 +17,7 @@ export class TaskModal {
   saveTask = output<TaskFormModel>();
   cancel = output<void>();
 
-  taskModel = signal<TaskFormModel>({ title: '', description: '', priority: 'LOW' });
+  taskModel = signal<TaskFormModel>({ title: '', description: '', priority: 'Baixa' });
 
   taskForm = form(this.taskModel, (path) => {
     required(path.title, { message: 'Campo obrigatório!' });
@@ -34,7 +34,7 @@ export class TaskModal {
         this.taskModel.set({
           title: '',
           description: '',
-          priority: 'LOW',
+          priority: 'Baixa',
         });
       }
     });
@@ -43,7 +43,7 @@ export class TaskModal {
   save(): void {
     submit(this.taskForm, async (form) => {
       this.saveTask.emit(form().value());
-      this.taskModel.set({ title: '', description: '', priority: 'LOW' });
+      this.taskModel.set({ title: '', description: '', priority: 'Baixa' });
       return null;
     });
   }

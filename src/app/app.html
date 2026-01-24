@@ -6,6 +6,11 @@
     (saveTask)="editingTask() ? editTask($event) : createTask($event)"
     (cancel)="closeModal()"
   ></app-task-modal>
+  <app-task-details-modal
+    [open]="showDetailsModal()"
+    [task]="selectedTask()"
+    (close)="closeDetails()"
+  />
 
   <button (click)="openModal()">+ Adicionar Task</button>
 
@@ -27,6 +32,7 @@
             <span class="task-title">{{ task.title }}</span>
 
             <div class="task-actions">
+              <button type="button" class="btn-icon ver" (click)="openDetails(task)">Ver</button>
               <button class="btn-icon edit" type="button" (click)="openEditModal(task)">✏️</button>
               <button
                 class="btn-icon delete"
@@ -60,6 +66,7 @@
           <div class="task-card" cdkDrag [cdkDragData]="task">
             <span class="task-title">{{ task.title }}</span>
             <div class="task-actions">
+              <button type="button" class="btn-icon ver" (click)="openDetails(task)">Ver</button>
               <button class="btn-icon edit" type="button" (click)="openEditModal(task)">✏️</button>
               <button
                 class="btn-icon delete"
@@ -91,6 +98,7 @@
           <div class="task-card" cdkDrag [cdkDragData]="task">
             <span class="task-title">{{ task.title }}</span>
             <div class="task-actions">
+              <button type="button" class="btn-icon ver" (click)="openDetails(task)">Ver</button>
               <button class="btn-icon edit" type="button" (click)="openEditModal(task)">✏️</button>
               <button
                 class="btn-icon delete"
@@ -122,6 +130,7 @@
           <div class="task-card" cdkDrag [cdkDragData]="task">
             <span class="task-title">{{ task.title }}</span>
             <div class="task-actions">
+              <button type="button" class="btn-icon ver" (click)="openDetails(task)">Ver</button>
               <button class="btn-icon edit" type="button" (click)="openEditModal(task)">✏️</button>
               <button
                 class="btn-icon delete"

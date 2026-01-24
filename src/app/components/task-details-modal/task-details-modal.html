@@ -1,0 +1,17 @@
+@if (open() && task()) {
+  <dialog open>
+    <header>
+      <h2>{{ task()!.title }}</h2>
+      <button type="button" (click)="close.emit()">✖</button>
+    </header>
+
+    <p><strong>Descrição:</strong></p>
+    <p>{{ task()!.description }}</p>
+
+    <p><strong>Status:</strong> {{ task()!.status }}</p>
+    <p><strong>Prioridade:</strong> {{ task()!.priority }}</p>
+
+    <p><strong>Criada em:</strong> {{ task()!.createdAt | date: 'short' }}</p>
+    <p><strong>Atualizada em:</strong> {{ task()!.updatedAt | date: 'short' }}</p>
+  </dialog>
+}
