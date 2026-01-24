@@ -8,10 +8,10 @@ export interface Task {
   updatedAt: string;
 }
 
-export type TaskFormModel = {
+export interface TaskFormModel {
   title: string;
   description: string;
   priority: 'LOW' | 'MEDIUM' | 'HIGH';
-};
+}
 
 export type TaskStatus = 'Backlog' | 'Em andamento' | 'Em revisão' | 'Concluído';

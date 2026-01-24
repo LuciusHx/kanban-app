@@ -74,4 +74,20 @@ export class TaskService {
 
     this._tasks.update((tasks) => [...tasks, newTask]);
   }
+
+  editTask(id: string, data: Partial<Task>) {
+    const now = new Date().toISOString();
+
+    this._tasks.update((tasks) =>
+      tasks.map((task) =>
+        task.id === id
+          ? {
+              ...task,
+              ...data,
+              updatedAt: now,
+            }
+          : task,
+      ),
+    );
+  }
 }

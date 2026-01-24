@@ -1,8 +1,9 @@
 <div>
   <app-task-modal
     [open]="showModal()"
-    mode="create"
-    (saveTask)="createTask($event)"
+    [mode]="editingTask() ? 'edit' : 'create'"
+    [task]="editingTask()"
+    (saveTask)="editingTask() ? editTask($event) : createTask($event)"
     (cancel)="closeModal()"
   ></app-task-modal>
   <button (click)="openModal()">Adicionar Task</button>
@@ -16,6 +17,7 @@
       <h3>Backlog</h3>
       @for (backlogTask of taskService.backlogTasks(); track backlogTask.id) {
         <label cdkDrag [cdkDragData]="backlogTask">{{ backlogTask.title }}</label>
+        <button type="button" (click)="openEditModal(backlogTask)">✏️</button>
       }
     </div>
     <div
@@ -27,6 +29,7 @@
       <h3>Em andamento</h3>
       @for (inProgressTask of taskService.inProgressTasks(); track inProgressTask.id) {
         <label cdkDrag [cdkDragData]="inProgressTask">{{ inProgressTask.title }}</label>
+        <button type="button" (click)="openEditModal(inProgressTask)">✏️</button>
       }
     </div>
 
@@ -39,6 +42,7 @@
       <h3>Revisão</h3>
       @for (reviewTask of taskService.reviewTasks(); track reviewTask.id) {
         <label cdkDrag [cdkDragData]="reviewTask">{{ reviewTask.title }}</label>
+        <button type="button" (click)="openEditModal(reviewTask)">✏️</button>
       }
     </div>
 
@@ -51,6 +55,7 @@
       <h3>Concluído</h3>
       @for (doneTask of taskService.doneTasks(); track doneTask.id) {
         <label cdkDrag [cdkDragData]="doneTask">{{ doneTask.title }}</label>
+        <button type="button" (click)="openEditModal(doneTask)">✏️</button>
       }
     </div>
   </div>

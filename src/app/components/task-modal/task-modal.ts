@@ -1,4 +1,4 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, effect, input, output, signal } from '@angular/core';
 import { form, FormField, required, submit } from '@angular/forms/signals';
 import { TaskFormModel } from '../../models/task.interface';
 
@@ -12,6 +12,8 @@ export class TaskModal {
   open = input.required<boolean>();
   mode = input<'create' | 'edit'>('create');
 
+  task = input<TaskFormModel | null>(null);
+
   saveTask = output<TaskFormModel>();
   cancel = output<void>();
 
@@ -22,9 +24,26 @@ export class TaskModal {
     required(path.description, { message: 'Campo obrigatório!' });
   });
 
+  constructor() {
+    effect(() => {
+      if (this.mode() === 'edit' && this.task()) {
+        this.taskModel.set(this.task()!);
+      }
+
+      if (this.mode() === 'create') {
+        this.taskModel.set({
+          title: '',
+          description: '',
+          priority: 'LOW',
+        });
+      }
+    });
+  }
+
   save(): void {
     submit(this.taskForm, async (form) => {
       this.saveTask.emit(form().value());
+      this.taskModel.set({ title: '', description: '', priority: 'LOW' });
       return null;
     });
   }

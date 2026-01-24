@@ -15,6 +15,8 @@ export class App {
 
   showModal = signal(false);
 
+  editingTask = signal<Task | null>(null);
+
   ngOnInit() {
     this.taskService.loadTasks();
   }
@@ -36,8 +38,24 @@ export class App {
     this.showModal.set(false);
   }
 
+  openEditModal(task: Task) {
+    this.editingTask.set(task);
+    this.showModal.set(true);
+  }
+
+  //------ CRUD METHODS
   createTask(task: TaskFormModel) {
     this.taskService.createTask(task);
     this.closeModal();
+  }
+
+  editTask(data: TaskFormModel) {
+    const task = this.editingTask();
+
+    if (!task) return;
+
+    this.taskService.editTask(task.id, data);
+    this.closeModal();
+    this.editingTask.set(null);
   }
 }
