@@ -58,4 +58,11 @@ export class App {
     this.closeModal();
     this.editingTask.set(null);
   }
+
+  deleteTask(task: Task) {
+    const confirmed = confirm(`Deseja remover a tarefa "${task.title}"?`);
+    if (!confirmed) return;
+
+    this.taskService.deleteTask(task.id);
+  }
 }

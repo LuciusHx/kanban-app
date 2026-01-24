@@ -18,6 +18,7 @@
       @for (backlogTask of taskService.backlogTasks(); track backlogTask.id) {
         <label cdkDrag [cdkDragData]="backlogTask">{{ backlogTask.title }}</label>
         <button type="button" (click)="openEditModal(backlogTask)">✏️</button>
+        <button type="button" (click)="deleteTask(backlogTask)" title="Remover tarefa">🗑️</button>
       }
     </div>
     <div
@@ -30,6 +31,9 @@
       @for (inProgressTask of taskService.inProgressTasks(); track inProgressTask.id) {
         <label cdkDrag [cdkDragData]="inProgressTask">{{ inProgressTask.title }}</label>
         <button type="button" (click)="openEditModal(inProgressTask)">✏️</button>
+        <button type="button" (click)="deleteTask(inProgressTask)" title="Remover tarefa">
+          🗑️
+        </button>
       }
     </div>
 
@@ -43,6 +47,7 @@
       @for (reviewTask of taskService.reviewTasks(); track reviewTask.id) {
         <label cdkDrag [cdkDragData]="reviewTask">{{ reviewTask.title }}</label>
         <button type="button" (click)="openEditModal(reviewTask)">✏️</button>
+        <button type="button" (click)="deleteTask(reviewTask)" title="Remover tarefa">🗑️</button>
       }
     </div>
 
@@ -56,6 +61,7 @@
       @for (doneTask of taskService.doneTasks(); track doneTask.id) {
         <label cdkDrag [cdkDragData]="doneTask">{{ doneTask.title }}</label>
         <button type="button" (click)="openEditModal(doneTask)">✏️</button>
+        <button type="button" (click)="deleteTask(doneTask)" title="Remover tarefa">🗑️</button>
       }
     </div>
   </div>

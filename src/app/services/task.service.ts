@@ -90,4 +90,8 @@ export class TaskService {
       ),
     );
   }
+
+  deleteTask(id: string) {
+    this._tasks.update((tasks) => tasks.filter((task) => task.id !== id));
+  }
 }
