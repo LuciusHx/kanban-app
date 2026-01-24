@@ -11,7 +11,7 @@
     <p><strong>Status:</strong> {{ task()!.status }}</p>
     <p><strong>Prioridade:</strong> {{ task()!.priority }}</p>
 
-    <p><strong>Criada em:</strong> {{ task()!.createdAt | date: 'short' }}</p>
-    <p><strong>Atualizada em:</strong> {{ task()!.updatedAt | date: 'short' }}</p>
+    <p><strong>Criada em:</strong> {{ task()!.createdAt | dateFormat }}</p>
+    <p><strong>Atualizada em:</strong> {{ task()!.updatedAt | dateFormat }}</p>
   </dialog>
 }

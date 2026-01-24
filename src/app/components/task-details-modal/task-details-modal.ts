@@ -1,10 +1,10 @@
 import { Component, input, output } from '@angular/core';
 import { Task } from '../../models/task.interface';
-import { DatePipe } from '@angular/common';
+import { DateFormatPipe } from '../../pipes/date-pipe';
 
 @Component({
   selector: 'app-task-details-modal',
-  imports: [DatePipe],
+  imports: [DateFormatPipe],
   templateUrl: './task-details-modal.html',
   styleUrl: './task-details-modal.scss',
 })
