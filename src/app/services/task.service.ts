@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { Task, TaskFormModel, TaskStatus } from '../models/task.interface';
 
 @Injectable({
@@ -9,6 +9,9 @@ export class TaskService {
   private readonly url = 'assets/tasks.json';
 
   http = inject(HttpClient);
+
+  //localStorage key
+  private readonly STORAGE_KEY = 'kanban_tasks';
 
   // estado
   private _tasks = signal<Task[]>([]);
@@ -27,6 +30,13 @@ export class TaskService {
   );
   readonly reviewTasks = computed(() => this.tasks().filter((t) => t.status === 'Em revisão'));
   readonly doneTasks = computed(() => this.tasks().filter((t) => t.status === 'Concluído'));
+
+  constructor() {
+    effect(() => {
+      const tasks = this._tasks();
+      this.saveToStorage(tasks);
+    });
+  }
 
   moveTask(taskId: string, newStatus: TaskStatus) {
     this._tasks.update((tasks) =>
@@ -47,9 +57,17 @@ export class TaskService {
     this._loading.set(true);
     this._error.set(null);
 
+    const storedTasks = this.loadFromStorage();
+
+    if (storedTasks) {
+      this._tasks.set(storedTasks);
+      this._loading.set(false);
+    }
+
     this.http.get<Task[]>(this.url).subscribe({
       next: (tasks) => {
         this._tasks.set(tasks);
+        this.saveToStorage(tasks);
         this._loading.set(false);
       },
       error: () => {
@@ -93,5 +111,15 @@ export class TaskService {
 
   deleteTask(id: string) {
     this._tasks.update((tasks) => tasks.filter((task) => task.id !== id));
+  }
+
+  //--------- LocalStorage
+  private saveToStorage(tasks: Task[]) {
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(tasks));
+  }
+
+  private loadFromStorage(): Task[] | null {
+    const data = localStorage.getItem(this.STORAGE_KEY);
+    return data ? (JSON.parse(data) as Task[]) : null;
   }
 }
