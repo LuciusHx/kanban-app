@@ -14,6 +14,8 @@ import { TaskDetailsModal } from './components/task-details-modal/task-details-m
 export class App {
   taskService = inject(TaskService);
 
+  loading = this.taskService.loading;
+
   showModal = signal(false);
   showDetailsModal = signal(false);
 
@@ -78,5 +80,10 @@ export class App {
     if (!confirmed) return;
 
     this.taskService.deleteTask(task.id);
+  }
+
+  //loading (apenas para demonstração que a funcionalidade EXISTE)
+  showLoading() {
+    this.taskService.setLoading();
   }
 }

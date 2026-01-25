@@ -1,149 +1,166 @@
-<div>
-  <app-task-modal
-    [open]="showModal()"
-    [mode]="editingTask() ? 'edit' : 'create'"
-    [task]="editingTask()"
-    (saveTask)="editingTask() ? editTask($event) : createTask($event)"
-    (cancel)="closeModal()"
-  ></app-task-modal>
-  <app-task-details-modal
-    [open]="showDetailsModal()"
-    [task]="selectedTask()"
-    (close)="closeDetails()"
-  />
-
-  <button (click)="openModal()">+ Adicionar Task</button>
-
-  <div cdkDropListGroup class="board">
-    <div class="col">
-      <h3>
-        Backlog
-        <span class="count">{{ taskService.backlogTasks().length }}</span>
-      </h3>
-
-      <div
-        cdkDropList
-        [cdkDropListData]="taskService.backlogTasks()"
-        (cdkDropListDropped)="drop($event, 'Backlog')"
-        class="task-list"
-      >
-        @for (task of taskService.backlogTasks(); track task.id) {
-          <div class="task-card" cdkDrag [cdkDragData]="task">
-            <span class="task-title">{{ task.title }}</span>
-
-            <div class="task-actions">
-              <button type="button" class="btn-icon ver" (click)="openDetails(task)">Ver</button>
-              <button class="btn-icon edit" type="button" (click)="openEditModal(task)">✏️</button>
-              <button
-                class="btn-icon delete"
-                type="button"
-                (click)="deleteTask(task)"
-                title="Remover tarefa"
-              >
-                🗑️
-              </button>
-            </div>
-
-            <div cdkDragPlaceholder class="custom-placeholder"></div>
-          </div>
-        }
-      </div>
+@if (loading()) {
+  <div class="loading-container">
+    <span class="spinner"></span>
+    <p>Carregando tarefas...</p>
+  </div>
+} @else {
+  <div>
+    <app-task-modal
+      [open]="showModal()"
+      [mode]="editingTask() ? 'edit' : 'create'"
+      [task]="editingTask()"
+      (saveTask)="editingTask() ? editTask($event) : createTask($event)"
+      (cancel)="closeModal()"
+    ></app-task-modal>
+    <app-task-details-modal
+      [open]="showDetailsModal()"
+      [task]="selectedTask()"
+      (close)="closeDetails()"
+    />
+    <div class="header-buttons">
+      <button (click)="openModal()">+ Adicionar Task</button>
+      <button (click)="showLoading()" class="secondary">Loading</button>
     </div>
 
-    <div class="col">
-      <h3>
-        Em andamento
-        <span class="count">{{ taskService.inProgressTasks().length }}</span>
-      </h3>
+    <div cdkDropListGroup class="board">
+      <div class="col">
+        <h3>
+          Backlog
+          <span class="count">{{ taskService.backlogTasks().length }}</span>
+        </h3>
 
-      <div
-        cdkDropList
-        [cdkDropListData]="taskService.inProgressTasks()"
-        (cdkDropListDropped)="drop($event, 'Em andamento')"
-        class="task-list"
-      >
-        @for (task of taskService.inProgressTasks(); track task.id) {
-          <div class="task-card" cdkDrag [cdkDragData]="task">
-            <span class="task-title">{{ task.title }}</span>
-            <div class="task-actions">
-              <button type="button" class="btn-icon ver" (click)="openDetails(task)">Ver</button>
-              <button class="btn-icon edit" type="button" (click)="openEditModal(task)">✏️</button>
-              <button
-                class="btn-icon delete"
-                type="button"
-                (click)="deleteTask(task)"
-                title="Remover tarefa"
-              >
-                🗑️
-              </button>
+        <div
+          cdkDropList
+          [cdkDropListData]="taskService.backlogTasks()"
+          (cdkDropListDropped)="drop($event, 'Backlog')"
+          class="task-list"
+        >
+          @for (task of taskService.backlogTasks(); track task.id) {
+            <div class="task-card" cdkDrag [cdkDragData]="task">
+              <span class="task-title">{{ task.title }}</span>
+
+              <div class="task-actions">
+                <button type="button" class="btn-icon ver" (click)="openDetails(task)">Ver</button>
+                <button class="btn-icon edit" type="button" (click)="openEditModal(task)">
+                  ✏️
+                </button>
+                <button
+                  class="btn-icon delete"
+                  type="button"
+                  (click)="deleteTask(task)"
+                  title="Remover tarefa"
+                >
+                  🗑️
+                </button>
+              </div>
+
+              <div cdkDragPlaceholder class="custom-placeholder"></div>
             </div>
-          </div>
-        }
+          }
+        </div>
       </div>
-    </div>
 
-    <div class="col">
-      <h3>
-        Revisão
-        <span class="count">{{ taskService.reviewTasks().length }}</span>
-      </h3>
+      <div class="col">
+        <h3>
+          Em andamento
+          <span class="count">{{ taskService.inProgressTasks().length }}</span>
+        </h3>
 
-      <div
-        cdkDropList
-        [cdkDropListData]="taskService.reviewTasks()"
-        (cdkDropListDropped)="drop($event, 'Em revisão')"
-        class="task-list"
-      >
-        @for (task of taskService.reviewTasks(); track task.id) {
-          <div class="task-card" cdkDrag [cdkDragData]="task">
-            <span class="task-title">{{ task.title }}</span>
-            <div class="task-actions">
-              <button type="button" class="btn-icon ver" (click)="openDetails(task)">Ver</button>
-              <button class="btn-icon edit" type="button" (click)="openEditModal(task)">✏️</button>
-              <button
-                class="btn-icon delete"
-                type="button"
-                (click)="deleteTask(task)"
-                title="Remover tarefa"
-              >
-                🗑️
-              </button>
+        <div
+          cdkDropList
+          [cdkDropListData]="taskService.inProgressTasks()"
+          (cdkDropListDropped)="drop($event, 'Em andamento')"
+          class="task-list"
+        >
+          @for (task of taskService.inProgressTasks(); track task.id) {
+            <div class="task-card" cdkDrag [cdkDragData]="task">
+              <span class="task-title">{{ task.title }}</span>
+              <div class="task-actions">
+                <button type="button" class="btn-icon ver" (click)="openDetails(task)">Ver</button>
+                <button class="btn-icon edit" type="button" (click)="openEditModal(task)">
+                  ✏️
+                </button>
+                <button
+                  class="btn-icon delete"
+                  type="button"
+                  (click)="deleteTask(task)"
+                  title="Remover tarefa"
+                >
+                  🗑️
+                </button>
+              </div>
             </div>
-          </div>
-        }
+          }
+        </div>
       </div>
-    </div>
 
-    <div class="col">
-      <h3>
-        Concluído
-        <span class="count">{{ taskService.doneTasks().length }}</span>
-      </h3>
+      <div class="col">
+        <h3>
+          Revisão
+          <span class="count">{{ taskService.reviewTasks().length }}</span>
+        </h3>
 
-      <div
-        cdkDropList
-        [cdkDropListData]="taskService.doneTasks()"
-        (cdkDropListDropped)="drop($event, 'Concluído')"
-        class="task-list"
-      >
-        @for (task of taskService.doneTasks(); track task.id) {
-          <div class="task-card" cdkDrag [cdkDragData]="task">
-            <span class="task-title">{{ task.title }}</span>
-            <div class="task-actions">
-              <button type="button" class="btn-icon ver" (click)="openDetails(task)">Ver</button>
-              <button class="btn-icon edit" type="button" (click)="openEditModal(task)">✏️</button>
-              <button
-                class="btn-icon delete"
-                type="button"
-                (click)="deleteTask(task)"
-                title="Remover tarefa"
-              >
-                🗑️
-              </button>
+        <div
+          cdkDropList
+          [cdkDropListData]="taskService.reviewTasks()"
+          (cdkDropListDropped)="drop($event, 'Em revisão')"
+          class="task-list"
+        >
+          @for (task of taskService.reviewTasks(); track task.id) {
+            <div class="task-card" cdkDrag [cdkDragData]="task">
+              <span class="task-title">{{ task.title }}</span>
+              <div class="task-actions">
+                <button type="button" class="btn-icon ver" (click)="openDetails(task)">Ver</button>
+                <button class="btn-icon edit" type="button" (click)="openEditModal(task)">
+                  ✏️
+                </button>
+                <button
+                  class="btn-icon delete"
+                  type="button"
+                  (click)="deleteTask(task)"
+                  title="Remover tarefa"
+                >
+                  🗑️
+                </button>
+              </div>
             </div>
-          </div>
-        }
+          }
+        </div>
+      </div>
+
+      <div class="col">
+        <h3>
+          Concluído
+          <span class="count">{{ taskService.doneTasks().length }}</span>
+        </h3>
+
+        <div
+          cdkDropList
+          [cdkDropListData]="taskService.doneTasks()"
+          (cdkDropListDropped)="drop($event, 'Concluído')"
+          class="task-list"
+        >
+          @for (task of taskService.doneTasks(); track task.id) {
+            <div class="task-card" cdkDrag [cdkDragData]="task">
+              <span class="task-title">{{ task.title }}</span>
+              <div class="task-actions">
+                <button type="button" class="btn-icon ver" (click)="openDetails(task)">Ver</button>
+                <button class="btn-icon edit" type="button" (click)="openEditModal(task)">
+                  ✏️
+                </button>
+                <button
+                  class="btn-icon delete"
+                  type="button"
+                  (click)="deleteTask(task)"
+                  title="Remover tarefa"
+                >
+                  🗑️
+                </button>
+              </div>
+            </div>
+          }
+        </div>
       </div>
     </div>
   </div>
-</div>
+}

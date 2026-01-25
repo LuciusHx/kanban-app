@@ -78,6 +78,8 @@ export class TaskService {
   }
 
   createTask(task: TaskFormModel) {
+    this._loading.set(true);
+
     const now = new Date().toISOString();
 
     const newTask: Task = {
@@ -91,9 +93,11 @@ export class TaskService {
     };
 
     this._tasks.update((tasks) => [...tasks, newTask]);
+    this._loading.set(false);
   }
 
   editTask(id: string, data: Partial<Task>) {
+    this._loading.set(true);
     const now = new Date().toISOString();
 
     this._tasks.update((tasks) =>
@@ -107,10 +111,13 @@ export class TaskService {
           : task,
       ),
     );
+    this._loading.set(false);
   }
 
   deleteTask(id: string) {
+    this._loading.set(true);
     this._tasks.update((tasks) => tasks.filter((task) => task.id !== id));
+    this._loading.set(false);
   }
 
   //--------- LocalStorage
@@ -121,5 +128,14 @@ export class TaskService {
   private loadFromStorage(): Task[] | null {
     const data = localStorage.getItem(this.STORAGE_KEY);
     return data ? (JSON.parse(data) as Task[]) : null;
+  }
+
+  //loading
+  setLoading() {
+    this._loading.set(true);
+
+    setTimeout(() => {
+      this._loading.set(false);
+    }, 3000);
   }
 }
