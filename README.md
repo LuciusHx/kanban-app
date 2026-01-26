@@ -92,7 +92,12 @@ src/app
 - Implementar testes unitários (Jasmine/Jest).
 - Melhorar indicadores visuais nos cards (tags coloridas, avatares).
 
-Como rodar localmente
+### Como acessar a aplicação
+```
+https://d38ceo6h3ef5nr.cloudfront.net/
+```
+
+### Como rodar localmente
 Clone o repositório:
 
 
