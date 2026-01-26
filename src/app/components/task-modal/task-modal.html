@@ -3,14 +3,32 @@
     <h2>{{ mode() === 'edit' ? 'Editar tarefa' : 'Nova tarefa' }}</h2>
 
     <form>
-      <input [formField]="taskForm.title" />
-      <textarea [formField]="taskForm.description"></textarea>
-
-      <select [formField]="taskForm.priority">
-        <option value="LOW">Baixa</option>
-        <option value="MEDIUM">Média</option>
-        <option value="HIGH">Alta</option>
-      </select>
+      <div>
+        <label>Título:</label>
+        <input [formField]="taskForm.title" />
+        @if (taskForm.title().invalid() && taskForm.title().touched()) {
+          @for (error of taskForm.title().errors(); track error) {
+            <small class="error">{{ error.message }}</small>
+          }
+        }
+      </div>
+      <div>
+        <label>Descrição:</label>
+        <textarea [formField]="taskForm.description"></textarea>
+        @if (taskForm.description().invalid() && taskForm.description().touched()) {
+          @for (error of taskForm.description().errors(); track error) {
+            <small class="error">{{ error.message }}</small>
+          }
+        }
+      </div>
+      <div>
+        Prioridade:
+        <select [formField]="taskForm.priority">
+          <option value="Baixa">Baixa</option>
+          <option value="Média">Média</option>
+          <option value="Alta">Alta</option>
+        </select>
+      </div>
       <div>
         <button
           type="button"
@@ -19,7 +37,7 @@
         >
           Salvar
         </button>
-        <button type="button" (click)="cancel.emit()">Cancelar</button>
+        <button type="button" (click)="onCancel()">Cancelar</button>
       </div>
     </form>
   </dialog>

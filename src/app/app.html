@@ -4,6 +4,7 @@
     <p>Carregando tarefas...</p>
   </div>
 } @else {
+  <app-toast></app-toast>
   <div>
     <app-task-modal
       [open]="showModal()"
@@ -12,13 +13,15 @@
       (saveTask)="editingTask() ? editTask($event) : createTask($event)"
       (cancel)="closeModal()"
     ></app-task-modal>
+
     <app-task-details-modal
       [open]="showDetailsModal()"
       [task]="selectedTask()"
       (close)="closeDetails()"
     />
+
     <div class="header-buttons">
-      <button (click)="openModal()">+ Adicionar Task</button>
+      <button (click)="openCreateModal()">+ Adicionar Task</button>
       <button (click)="showLoading()" class="secondary">Loading</button>
     </div>
 

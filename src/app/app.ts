@@ -1,18 +1,21 @@
 import { CdkDragDrop, CdkDropList, CdkDrag, CdkDropListGroup } from '@angular/cdk/drag-drop';
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { TaskService } from './services/task.service';
 import { Task, TaskFormModel, TaskStatus } from './models/task.interface';
 import { TaskModal } from './components/task-modal/task-modal';
 import { TaskDetailsModal } from './components/task-details-modal/task-details-modal';
+import { Toast } from './components/toast/toast';
+import { ToastService } from './services/toast.service';
 
 @Component({
   selector: 'app-root',
-  imports: [CdkDropList, CdkDrag, CdkDropListGroup, TaskModal, TaskDetailsModal],
+  imports: [CdkDropList, CdkDrag, CdkDropListGroup, TaskModal, TaskDetailsModal, Toast],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App {
   taskService = inject(TaskService);
+  toastService = inject(ToastService);
 
   loading = this.taskService.loading;
 
@@ -26,6 +29,16 @@ export class App {
     this.taskService.loadTasks();
   }
 
+  constructor() {
+    effect(() => {
+      const error = this.taskService.error();
+
+      if (error) {
+        this.toastService.error(error);
+      }
+    });
+  }
+
   drop(event: CdkDragDrop<Task[]>, status: TaskStatus) {
     const task = event.item.data as Task;
 
@@ -35,12 +48,14 @@ export class App {
   }
 
   //---------- MODAl
-  openModal() {
+  openCreateModal() {
+    this.editingTask.set(null);
     this.showModal.set(true);
   }
 
   closeModal() {
     this.showModal.set(false);
+    this.editingTask.set(null);
   }
 
   openEditModal(task: Task) {

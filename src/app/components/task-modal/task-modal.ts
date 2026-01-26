@@ -26,18 +26,28 @@ export class TaskModal {
 
   constructor() {
     effect(() => {
+      if (!this.open()) return;
+
+      if (this.mode() === 'create') {
+        this.resetForm();
+      }
       if (this.mode() === 'edit' && this.task()) {
         this.taskModel.set(this.task()!);
       }
-
-      if (this.mode() === 'create') {
-        this.taskModel.set({
-          title: '',
-          description: '',
-          priority: 'Baixa',
-        });
-      }
     });
+  }
+
+  private resetForm() {
+    this.taskModel.set({
+      title: '',
+      description: '',
+      priority: 'Baixa',
+    });
+  }
+
+  onCancel() {
+    this.resetForm();
+    this.cancel.emit();
   }
 
   save(): void {

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { Task, TaskFormModel, TaskStatus } from '../models/task.interface';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +10,7 @@ export class TaskService {
   private readonly url = 'assets/tasks.json';
 
   http = inject(HttpClient);
+  toastService = inject(ToastService);
 
   //localStorage key
   private readonly STORAGE_KEY = 'kanban_tasks';
@@ -122,12 +124,21 @@ export class TaskService {
 
   //--------- LocalStorage
   private saveToStorage(tasks: Task[]) {
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(tasks));
+    try {
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    } catch {
+      this._error.set('Não foi possível salvar as tarefas.');
+    }
   }
 
   private loadFromStorage(): Task[] | null {
-    const data = localStorage.getItem(this.STORAGE_KEY);
-    return data ? (JSON.parse(data) as Task[]) : null;
+    try {
+      const data = localStorage.getItem('tasks');
+      return data ? JSON.parse(data) : [];
+    } catch {
+      this.setError('Dados salvos estão corrompidos.');
+      return [];
+    }
   }
 
   //loading
@@ -137,5 +148,10 @@ export class TaskService {
     setTimeout(() => {
       this._loading.set(false);
     }, 3000);
+  }
+
+  //error
+  private setError(message: string) {
+    this._error.set(message);
   }
 }
