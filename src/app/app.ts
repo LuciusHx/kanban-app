@@ -44,7 +44,7 @@ export class App {
 
     if (!task) return;
 
-    this.taskService.moveTask(task.id, status);
+    this.taskService.moveTask(task.id, status, event.currentIndex);
   }
 
   //---------- MODAl

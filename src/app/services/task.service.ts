@@ -26,12 +26,26 @@ export class TaskService {
   readonly error = this._error.asReadonly();
 
   //filtro para as colunas
-  readonly backlogTasks = computed(() => this.tasks().filter((t) => t.status === 'Backlog'));
-  readonly inProgressTasks = computed(() =>
-    this.tasks().filter((t) => t.status === 'Em andamento'),
+  readonly backlogTasks = computed(() =>
+    this.tasks()
+      .filter((t) => t.status === 'Backlog')
+      .sort((a, b) => a.order - b.order),
   );
-  readonly reviewTasks = computed(() => this.tasks().filter((t) => t.status === 'Em revisão'));
-  readonly doneTasks = computed(() => this.tasks().filter((t) => t.status === 'Concluído'));
+  readonly inProgressTasks = computed(() =>
+    this.tasks()
+      .filter((t) => t.status === 'Em andamento')
+      .sort((a, b) => a.order - b.order),
+  );
+  readonly reviewTasks = computed(() =>
+    this.tasks()
+      .filter((t) => t.status === 'Em revisão')
+      .sort((a, b) => a.order - b.order),
+  );
+  readonly doneTasks = computed(() =>
+    this.tasks()
+      .filter((t) => t.status === 'Concluído')
+      .sort((a, b) => a.order - b.order),
+  );
 
   constructor() {
     effect(() => {
@@ -40,18 +54,34 @@ export class TaskService {
     });
   }
 
-  moveTask(taskId: string, newStatus: TaskStatus) {
-    this._tasks.update((tasks) =>
-      tasks.map((task) =>
-        task.id === taskId
-          ? {
-              ...task,
-              status: newStatus,
-              updatedAt: new Date().toISOString(),
-            }
-          : task,
-      ),
-    );
+  moveTask(taskId: string, newStatus: TaskStatus, newIndex: number) {
+    this._tasks.update((tasks) => {
+      const task = tasks.find((t) => t.id === taskId);
+      if (!task) return tasks;
+
+      // Remove a task da lista original
+      let updatedTasks = tasks.filter((t) => t.id !== taskId);
+
+      // Tasks da coluna destino
+      const destinationTasks = updatedTasks
+        .filter((t) => t.status === newStatus)
+        .sort((a, b) => a.order - b.order);
+
+      // Insere na posição visual correta
+      destinationTasks.splice(newIndex, 0, {
+        ...task,
+        status: newStatus,
+        updatedAt: new Date().toISOString(),
+      });
+
+      // Recalcula order da coluna destino
+      destinationTasks.forEach((t, index) => {
+        t.order = index;
+      });
+
+      // Junta tudo de volta
+      return [...updatedTasks.filter((t) => t.status !== newStatus), ...destinationTasks];
+    });
   }
 
   // --------- CRUD
@@ -84,12 +114,19 @@ export class TaskService {
 
     const now = new Date().toISOString();
 
+    const tasks = this._tasks();
+
+    const backlogTasks = tasks.filter((t) => t.status === 'Backlog');
+
+    const lastOrder = backlogTasks.length > 0 ? Math.max(...backlogTasks.map((t) => t.order)) : 0;
+
     const newTask: Task = {
       id: crypto.randomUUID(),
       title: task.title,
       description: task.description,
       status: 'Backlog',
       priority: task.priority,
+      order: lastOrder + 1,
       createdAt: now,
       updatedAt: now,
     };
