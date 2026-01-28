@@ -1,12 +1,16 @@
 import { CdkDragDrop, CdkDropList, CdkDrag, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { Component, effect, inject, signal } from '@angular/core';
-import { TaskService } from './services/task.service';
+
 import { Task, TaskFormModel, TaskStatus } from './models/task.interface';
+
 import { TaskModal } from './components/task-modal/task-modal';
 import { TaskDetailsModal } from './components/task-details-modal/task-details-modal';
 import { Toast } from './components/toast/toast';
+
+import { TaskService } from './services/task.service';
 import { ToastService } from './services/toast.service';
 import { LoadingService } from './services/loading.service';
+import { ErrorService } from './services/error.service';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +22,7 @@ export class App {
   taskService = inject(TaskService);
   toastService = inject(ToastService);
   loadingService = inject(LoadingService);
+  errorService = inject(ErrorService);
 
   loading = this.loadingService.loading;
 
@@ -33,7 +38,7 @@ export class App {
 
   constructor() {
     effect(() => {
-      const error = this.taskService.error();
+      const error = this.errorService.error();
 
       if (error) {
         this.toastService.error(error);

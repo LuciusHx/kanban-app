@@ -4,6 +4,7 @@ import { Task, TaskFormModel, TaskStatus } from '../models/task.interface';
 import { ToastService } from './toast.service';
 import { LoadingService } from './loading.service';
 import { LocalStorageService } from './localStorage.service';
+import { ErrorService } from './error.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,14 +16,13 @@ export class TaskService {
   toastService = inject(ToastService);
   loadingService = inject(LoadingService);
   localStorageService = inject(LocalStorageService);
+  errorService = inject(ErrorService);
 
   // estado
   private _tasks = signal<Task[]>([]);
-  private _error = signal<string | null>(null);
 
   //getter
   readonly tasks = this._tasks.asReadonly();
-  readonly error = this._error.asReadonly();
 
   //filtro para as colunas
   readonly backlogTasks = computed(() =>
@@ -86,7 +86,7 @@ export class TaskService {
   // --------- CRUD
   loadTasks() {
     this.loadingService.showLoading();
-    this._error.set(null);
+    this.errorService.setError(null);
 
     const storedTasks = this.localStorageService.loadFromStorage();
 
@@ -102,7 +102,8 @@ export class TaskService {
         this.loadingService.closeLoading();
       },
       error: () => {
-        this._error.set('Erro ao carregar tarefas');
+        this.errorService.setError('Erro ao carregar tarefas');
+
         this.loadingService.closeLoading();
       },
     });
@@ -156,10 +157,5 @@ export class TaskService {
     this.loadingService.showLoading();
     this._tasks.update((tasks) => tasks.filter((task) => task.id !== id));
     this.loadingService.closeLoading();
-  }
-
-  //error
-  private setError(message: string) {
-    this._error.set(message);
   }
 }
