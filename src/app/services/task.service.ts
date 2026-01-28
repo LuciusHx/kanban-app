@@ -3,6 +3,7 @@ import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { Task, TaskFormModel, TaskStatus } from '../models/task.interface';
 import { ToastService } from './toast.service';
 import { LoadingService } from './loading.service';
+import { LocalStorageService } from './localStorage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,9 +14,7 @@ export class TaskService {
   http = inject(HttpClient);
   toastService = inject(ToastService);
   loadingService = inject(LoadingService);
-
-  //localStorage key
-  private readonly STORAGE_KEY = 'kanban_tasks';
+  localStorageService = inject(LocalStorageService);
 
   // estado
   private _tasks = signal<Task[]>([]);
@@ -50,7 +49,7 @@ export class TaskService {
   constructor() {
     effect(() => {
       const tasks = this._tasks();
-      this.saveToStorage(tasks);
+      this.localStorageService.saveToStorage(tasks);
     });
   }
 
@@ -89,7 +88,7 @@ export class TaskService {
     this.loadingService.showLoading();
     this._error.set(null);
 
-    const storedTasks = this.loadFromStorage();
+    const storedTasks = this.localStorageService.loadFromStorage();
 
     if (storedTasks) {
       this._tasks.set(storedTasks);
@@ -99,7 +98,7 @@ export class TaskService {
     this.http.get<Task[]>(this.url).subscribe({
       next: (tasks) => {
         this._tasks.set(tasks);
-        this.saveToStorage(tasks);
+        this.localStorageService.saveToStorage(tasks);
         this.loadingService.closeLoading();
       },
       error: () => {
@@ -157,25 +156,6 @@ export class TaskService {
     this.loadingService.showLoading();
     this._tasks.update((tasks) => tasks.filter((task) => task.id !== id));
     this.loadingService.closeLoading();
-  }
-
-  //--------- LocalStorage
-  private saveToStorage(tasks: Task[]) {
-    try {
-      localStorage.setItem('tasks', JSON.stringify(tasks));
-    } catch {
-      this._error.set('Não foi possível salvar as tarefas.');
-    }
-  }
-
-  private loadFromStorage(): Task[] | null {
-    try {
-      const data = localStorage.getItem('tasks');
-      return data ? JSON.parse(data) : [];
-    } catch {
-      this.setError('Dados salvos estão corrompidos.');
-      return [];
-    }
   }
 
   //error
