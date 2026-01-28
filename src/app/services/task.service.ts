@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { Task, TaskFormModel, TaskStatus } from '../models/task.interface';
 import { ToastService } from './toast.service';
+import { LoadingService } from './loading.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,18 +12,17 @@ export class TaskService {
 
   http = inject(HttpClient);
   toastService = inject(ToastService);
+  loadingService = inject(LoadingService);
 
   //localStorage key
   private readonly STORAGE_KEY = 'kanban_tasks';
 
   // estado
   private _tasks = signal<Task[]>([]);
-  private _loading = signal(false);
   private _error = signal<string | null>(null);
 
   //getter
   readonly tasks = this._tasks.asReadonly();
-  readonly loading = this._loading.asReadonly();
   readonly error = this._error.asReadonly();
 
   //filtro para as colunas
@@ -86,31 +86,31 @@ export class TaskService {
 
   // --------- CRUD
   loadTasks() {
-    this._loading.set(true);
+    this.loadingService.showLoading();
     this._error.set(null);
 
     const storedTasks = this.loadFromStorage();
 
     if (storedTasks) {
       this._tasks.set(storedTasks);
-      this._loading.set(false);
+      this.loadingService.closeLoading();
     }
 
     this.http.get<Task[]>(this.url).subscribe({
       next: (tasks) => {
         this._tasks.set(tasks);
         this.saveToStorage(tasks);
-        this._loading.set(false);
+        this.loadingService.closeLoading();
       },
       error: () => {
         this._error.set('Erro ao carregar tarefas');
-        this._loading.set(false);
+        this.loadingService.closeLoading();
       },
     });
   }
 
   createTask(task: TaskFormModel) {
-    this._loading.set(true);
+    this.loadingService.showLoading();
 
     const now = new Date().toISOString();
 
@@ -132,11 +132,11 @@ export class TaskService {
     };
 
     this._tasks.update((tasks) => [...tasks, newTask]);
-    this._loading.set(false);
+    this.loadingService.closeLoading();
   }
 
   editTask(id: string, data: Partial<Task>) {
-    this._loading.set(true);
+    this.loadingService.showLoading();
     const now = new Date().toISOString();
 
     this._tasks.update((tasks) =>
@@ -150,13 +150,13 @@ export class TaskService {
           : task,
       ),
     );
-    this._loading.set(false);
+    this.loadingService.closeLoading();
   }
 
   deleteTask(id: string) {
-    this._loading.set(true);
+    this.loadingService.showLoading();
     this._tasks.update((tasks) => tasks.filter((task) => task.id !== id));
-    this._loading.set(false);
+    this.loadingService.closeLoading();
   }
 
   //--------- LocalStorage
@@ -176,15 +176,6 @@ export class TaskService {
       this.setError('Dados salvos estão corrompidos.');
       return [];
     }
-  }
-
-  //loading
-  setLoading() {
-    this._loading.set(true);
-
-    setTimeout(() => {
-      this._loading.set(false);
-    }, 3000);
   }
 
   //error

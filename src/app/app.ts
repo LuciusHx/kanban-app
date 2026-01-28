@@ -6,6 +6,7 @@ import { TaskModal } from './components/task-modal/task-modal';
 import { TaskDetailsModal } from './components/task-details-modal/task-details-modal';
 import { Toast } from './components/toast/toast';
 import { ToastService } from './services/toast.service';
+import { LoadingService } from './services/loading.service';
 
 @Component({
   selector: 'app-root',
@@ -16,8 +17,9 @@ import { ToastService } from './services/toast.service';
 export class App {
   taskService = inject(TaskService);
   toastService = inject(ToastService);
+  loadingService = inject(LoadingService);
 
-  loading = this.taskService.loading;
+  loading = this.loadingService.loading;
 
   showModal = signal(false);
   showDetailsModal = signal(false);
@@ -99,6 +101,8 @@ export class App {
 
   //loading (apenas para demonstração que a funcionalidade EXISTE)
   showLoading() {
-    this.taskService.setLoading();
+    this.loadingService.showLoading();
+
+    setTimeout(() => this.loadingService.closeLoading(), 1000);
   }
 }
