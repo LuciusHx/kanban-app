@@ -35,30 +35,18 @@
         <div
           cdkDropList
           [cdkDropListData]="taskService.backlogTasks()"
+          openDetails="$event"
+          openEditModal="$event"
           (cdkDropListDropped)="drop($event, 'Backlog')"
           class="task-list"
         >
           @for (task of taskService.backlogTasks(); track task.id) {
-            <div class="task-card" cdkDrag [cdkDragData]="task">
-              <span class="task-title">{{ task.title }}</span>
-
-              <div class="task-actions">
-                <button type="button" class="btn-icon ver" (click)="openDetails(task)">Ver</button>
-                <button class="btn-icon edit" type="button" (click)="openEditModal(task)">
-                  ✏️
-                </button>
-                <button
-                  class="btn-icon delete"
-                  type="button"
-                  (click)="deleteTask(task)"
-                  title="Remover tarefa"
-                >
-                  🗑️
-                </button>
-              </div>
-
-              <div cdkDragPlaceholder class="custom-placeholder"></div>
-            </div>
+            <app-task-card
+              [task]="task"
+              (deleteTask)="deleteTask(task)"
+              (editTask)="openEditModal(task)"
+              (taskDetails)="openDetails(task)"
+            ></app-task-card>
           }
         </div>
       </div>
@@ -76,23 +64,12 @@
           class="task-list"
         >
           @for (task of taskService.inProgressTasks(); track task.id) {
-            <div class="task-card" cdkDrag [cdkDragData]="task">
-              <span class="task-title">{{ task.title }}</span>
-              <div class="task-actions">
-                <button type="button" class="btn-icon ver" (click)="openDetails(task)">Ver</button>
-                <button class="btn-icon edit" type="button" (click)="openEditModal(task)">
-                  ✏️
-                </button>
-                <button
-                  class="btn-icon delete"
-                  type="button"
-                  (click)="deleteTask(task)"
-                  title="Remover tarefa"
-                >
-                  🗑️
-                </button>
-              </div>
-            </div>
+            <app-task-card
+              [task]="task"
+              (deleteTask)="deleteTask(task)"
+              (editTask)="openEditModal(task)"
+              (taskDetails)="openDetails(task)"
+            ></app-task-card>
           }
         </div>
       </div>
@@ -110,23 +87,12 @@
           class="task-list"
         >
           @for (task of taskService.reviewTasks(); track task.id) {
-            <div class="task-card" cdkDrag [cdkDragData]="task">
-              <span class="task-title">{{ task.title }}</span>
-              <div class="task-actions">
-                <button type="button" class="btn-icon ver" (click)="openDetails(task)">Ver</button>
-                <button class="btn-icon edit" type="button" (click)="openEditModal(task)">
-                  ✏️
-                </button>
-                <button
-                  class="btn-icon delete"
-                  type="button"
-                  (click)="deleteTask(task)"
-                  title="Remover tarefa"
-                >
-                  🗑️
-                </button>
-              </div>
-            </div>
+            <app-task-card
+              [task]="task"
+              (deleteTask)="deleteTask(task)"
+              (editTask)="openEditModal(task)"
+              (taskDetails)="openDetails(task)"
+            ></app-task-card>
           }
         </div>
       </div>
@@ -144,23 +110,12 @@
           class="task-list"
         >
           @for (task of taskService.doneTasks(); track task.id) {
-            <div class="task-card" cdkDrag [cdkDragData]="task">
-              <span class="task-title">{{ task.title }}</span>
-              <div class="task-actions">
-                <button type="button" class="btn-icon ver" (click)="openDetails(task)">Ver</button>
-                <button class="btn-icon edit" type="button" (click)="openEditModal(task)">
-                  ✏️
-                </button>
-                <button
-                  class="btn-icon delete"
-                  type="button"
-                  (click)="deleteTask(task)"
-                  title="Remover tarefa"
-                >
-                  🗑️
-                </button>
-              </div>
-            </div>
+            <app-task-card
+              [task]="task"
+              (deleteTask)="deleteTask(task)"
+              (editTask)="openEditModal(task)"
+              (taskDetails)="openDetails(task)"
+            ></app-task-card>
           }
         </div>
       </div>

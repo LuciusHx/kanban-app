@@ -11,10 +11,11 @@ import { TaskService } from './services/task.service';
 import { ToastService } from './services/toast.service';
 import { LoadingService } from './services/loading.service';
 import { ErrorService } from './services/error.service';
+import { TaskCard } from "./components/task-card/task-card";
 
 @Component({
   selector: 'app-root',
-  imports: [CdkDropList, CdkDrag, CdkDropListGroup, TaskModal, TaskDetailsModal, Toast],
+  imports: [CdkDropList, CdkDrag, CdkDropListGroup, TaskModal, TaskDetailsModal, Toast, TaskCard],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
