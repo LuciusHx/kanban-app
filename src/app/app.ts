@@ -1,4 +1,4 @@
-import { CdkDragDrop, CdkDropList, CdkDrag, CdkDropListGroup } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { Component, effect, inject, signal } from '@angular/core';
 
 import { Task, TaskFormModel, TaskStatus } from './models/task.interface';
@@ -11,11 +11,12 @@ import { TaskService } from './services/task.service';
 import { ToastService } from './services/toast.service';
 import { LoadingService } from './services/loading.service';
 import { ErrorService } from './services/error.service';
-import { TaskCard } from "./components/task-card/task-card";
+import { TaskCard } from './components/task-card/task-card';
+import { ConfirmDialog } from "./components/confirm-dialog/confirm-dialog";
 
 @Component({
   selector: 'app-root',
-  imports: [CdkDropList, CdkDrag, CdkDropListGroup, TaskModal, TaskDetailsModal, Toast, TaskCard],
+  imports: [CdkDropList, CdkDropListGroup, TaskModal, TaskDetailsModal, Toast, TaskCard, ConfirmDialog],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
@@ -29,9 +30,11 @@ export class App {
 
   showModal = signal(false);
   showDetailsModal = signal(false);
+  showConfirmModal = signal(false);
 
   selectedTask = signal<Task | null>(null);
   editingTask = signal<Task | null>(null);
+  taskToDelete = signal<string | null>(null);
 
   ngOnInit() {
     this.taskService.loadTasks();
@@ -98,11 +101,23 @@ export class App {
     this.editingTask.set(null);
   }
 
-  deleteTask(task: Task) {
-    const confirmed = confirm(`Deseja remover a tarefa "${task.title}"?`);
-    if (!confirmed) return;
+  //recebe o output signal do task-card
+  requestDelete(taskId: string) {
+    this.taskToDelete.set(taskId);
+    this.showConfirmModal.set(true);
+  }
 
-    this.taskService.deleteTask(task.id);
+  confirmDelete() {
+    const id = this.taskToDelete();
+    if (!id) return;
+
+    this.taskService.deleteTask(id);
+    this.closeConfirm();
+  }
+
+  closeConfirm() {
+    this.showConfirmModal.set(false);
+    this.taskToDelete.set(null);
   }
 
   //loading (apenas para demonstração que a funcionalidade EXISTE)

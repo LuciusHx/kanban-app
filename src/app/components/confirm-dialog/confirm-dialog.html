@@ -1,0 +1,11 @@
+@if (open()) {
+  <dialog open>
+    <h2>Atenção!</h2>
+    <p>{{ message() }}</p>
+
+    <div class="actions">
+      <button type="button" (click)="cancel.emit()">Cancelar</button>
+      <button type="button" class="danger" (click)="confirm.emit()">Confirmar</button>
+    </div>
+  </dialog>
+}

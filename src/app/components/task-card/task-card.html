@@ -4,12 +4,7 @@
   <div class="task-actions">
     <button type="button" class="btn-icon ver" (click)="taskDetails.emit()">Ver</button>
     <button class="btn-icon edit" type="button" (click)="editTask.emit()">✏️</button>
-    <button
-      class="btn-icon delete"
-      type="button"
-      (click)="deleteTask.emit()"
-      title="Remover tarefa"
-    >
+    <button class="btn-icon delete" type="button" (click)="onDelete()" title="Remover tarefa">
       🗑️
     </button>
   </div>

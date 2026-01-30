@@ -5,6 +5,12 @@
   </div>
 } @else {
   <app-toast></app-toast>
+  <app-confirm-dialog
+    [open]="showConfirmModal()"
+    message="Tem certeza que deseja excluir esta tarefa?"
+    (confirm)="confirmDelete()"
+    (cancel)="closeConfirm()"
+  ></app-confirm-dialog>
   <div>
     <app-task-modal
       [open]="showModal()"
@@ -43,7 +49,7 @@
           @for (task of taskService.backlogTasks(); track task.id) {
             <app-task-card
               [task]="task"
-              (deleteTask)="deleteTask(task)"
+              (delete)="requestDelete($event)"
               (editTask)="openEditModal(task)"
               (taskDetails)="openDetails(task)"
             ></app-task-card>
@@ -66,7 +72,7 @@
           @for (task of taskService.inProgressTasks(); track task.id) {
             <app-task-card
               [task]="task"
-              (deleteTask)="deleteTask(task)"
+              (delete)="requestDelete($event)"
               (editTask)="openEditModal(task)"
               (taskDetails)="openDetails(task)"
             ></app-task-card>
@@ -89,7 +95,7 @@
           @for (task of taskService.reviewTasks(); track task.id) {
             <app-task-card
               [task]="task"
-              (deleteTask)="deleteTask(task)"
+              (delete)="requestDelete($event)"
               (editTask)="openEditModal(task)"
               (taskDetails)="openDetails(task)"
             ></app-task-card>
@@ -112,7 +118,7 @@
           @for (task of taskService.doneTasks(); track task.id) {
             <app-task-card
               [task]="task"
-              (deleteTask)="deleteTask(task)"
+              (delete)="requestDelete($event)"
               (editTask)="openEditModal(task)"
               (taskDetails)="openDetails(task)"
             ></app-task-card>

@@ -15,7 +15,9 @@ export class TaskCard {
   editTask = output();
   deleteTask = output();
 
-  selectedTask = signal<Task | null>(null);
+  delete = output<string>();
 
-
+  onDelete() {
+    this.delete.emit(this.task()!.id);
+  }
 }

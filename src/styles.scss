@@ -59,6 +59,37 @@ button:last-of-type {
   }
 }
 
+dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 90%;
+  max-width: 500px;
+  padding: 2rem;
+
+  border: none;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+
+  margin: 0;
+  color: #333;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+
+  animation: fadeIn 0.2s ease-out;
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+}
+
 .error {
   color: red;
 }
