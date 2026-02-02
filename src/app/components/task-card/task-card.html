@@ -3,10 +3,19 @@
 
   <div class="task-actions">
     <button type="button" class="btn-icon ver" (click)="taskDetails.emit()">Ver</button>
-    <button class="btn-icon edit" type="button" (click)="editTask.emit()">✏️</button>
-    <button class="btn-icon delete" type="button" (click)="onDelete()" title="Remover tarefa">
-      🗑️
-    </button>
+
+    <div class="menu-wrapper">
+      <button type="button" class="btn-dots" (click)="toggleMenu($event)" aria-label="Abrir menu">
+        ⋮
+      </button>
+      @if (menuOpen()) {
+        <div class="menu">
+          <button class="menu-item" (click)="onEdit()">✏️ <span>Editar</span></button>
+
+          <button class="menu-item danger" (click)="onDelete()">🗑️ <span>Excluir</span></button>
+        </div>
+      }
+    </div>
   </div>
 
   <div cdkDragPlaceholder class="custom-placeholder"></div>
