@@ -9,18 +9,35 @@
     transform 0.2s;
   border: 1px solid transparent;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
   gap: 10px;
+  border-left: solid;
 
   &:hover {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    border-color: #e5e7eb;
   }
 
   &:active {
     cursor: grabbing;
   }
+}
+
+.Alta {
+  border-left: solid red;
+}
+
+.Média {
+  border-left: solid yellow;
+}
+
+.Baixa {
+  border-left: solid rgb(149, 238, 149);
+}
+
+.btn-primary {
+  width: 90%;
 }
 
 .task-title {
@@ -32,9 +49,11 @@
 
 .task-actions {
   display: flex;
+  justify-content: center;
   gap: 4px;
   opacity: 0;
   transition: opacity 0.2s;
+  width: 100%;
 }
 
 .task-card:hover .task-actions {
@@ -82,8 +101,17 @@
   padding: 4px 6px;
   border-radius: 6px;
 
+  background-color: #6366f1;
+  color: white;
+
   &:hover {
-    background: rgba(0, 0, 0, 0.06);
+    background-color: #4f46e5;
+  }
+
+  &:disabled {
+    background-color: #a5a6f6;
+    cursor: not-allowed;
+    opacity: 0.7;
   }
 }
 

@@ -1,8 +1,7 @@
-<div class="task-card" cdkDrag [cdkDragData]="task()">
+<div class="task-card" cdkDrag [cdkDragData]="task()" [class]="task()?.priority">
   <span class="task-title">{{ task()!.title }}</span>
-
   <div class="task-actions">
-    <button type="button" class="btn-icon ver" (click)="taskDetails.emit()">Ver</button>
+    <button type="button" class="btn-icon btn-primary" (click)="taskDetails.emit()">Ver</button>
 
     <div class="menu-wrapper">
       <button type="button" class="btn-dots" (click)="toggleMenu($event)" aria-label="Abrir menu">
